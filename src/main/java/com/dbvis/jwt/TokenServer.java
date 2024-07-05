@@ -6,6 +6,8 @@ import fi.iki.elonen.NanoHTTPD;
 
 public class TokenServer extends NanoHTTPD {
 
+    private static final String DEFAULT_USERNAME = "me";
+
     private final String certKeysPath;
 
     public TokenServer(String certKeysPath) throws IOException {
@@ -26,8 +28,17 @@ public class TokenServer extends NanoHTTPD {
 
     @Override
     public Response serve(IHTTPSession session) {
+        String uri = session.getUri();
+        String user = DEFAULT_USERNAME;
+        if (uri.contains("token/")) {
+            String inputUser = uri.substring(uri.lastIndexOf("token/") + 6);
+            if (inputUser.length() > 0) {
+                user = inputUser;
+            }
+        }
+
         String output = "<html><body>" +
-                "<h1>" + JwksGenerator.generateToken(certKeysPath) + "</h1>" +
+                "<h1>" + JwksGenerator.generateToken(certKeysPath, user) + "</h1>" +
                 "</body></html>";
         return newFixedLengthResponse(output);
     }

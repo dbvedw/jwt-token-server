@@ -24,9 +24,8 @@ import java.util.Base64;
 class JwksGenerator {
 
     private static final int EXPIRY_SECONDS = 24 * 60 * 60;
-    private static final String USERNAME = "me";
 
-    public static String generateToken(String certKeysPath) {
+    public static String generateToken(String certKeysPath, String user) {
 
         // *******************************
         // Load private key data from file
@@ -121,7 +120,7 @@ class JwksGenerator {
         String jwtPayload = Base64.getUrlEncoder().withoutPadding().encodeToString(
                 String.format(
                         jwtPayloadTemplate,
-                        USERNAME,
+                        user,
                         Instant.now().getEpochSecond(),
                         Instant.now().plusSeconds(EXPIRY_SECONDS).getEpochSecond()
                 ).replace(" ", "").replace("\n", "").getBytes(StandardCharsets.UTF_8)
