@@ -23,7 +23,7 @@ import java.util.Base64;
 
 class JwksGenerator {
 
-    private static final int EXPIRY_SECONDS = 24 * 60 * 60;
+    private static final int EXPIRY_SECONDS = 365 * 24 * 60 * 60;
 
     public static String generateToken(String certKeysPath, String user) {
 
